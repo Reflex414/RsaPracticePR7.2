@@ -9,8 +9,8 @@ namespace RsaCipherTests
     public class RsaCipherTests
     {
         // Фиксированные простые числа для предсказуемости тестов
-        private static readonly BigInteger p = 17;
-        private static readonly BigInteger q = 11;
+        private static readonly BigInteger p = 61;
+        private static readonly BigInteger q = 53;
         private static readonly BigInteger exp, d, n;
 
         static RsaCipherTests()

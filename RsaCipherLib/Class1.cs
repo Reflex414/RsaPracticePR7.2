@@ -105,21 +105,25 @@ namespace RsaCipherLib
                 return string.Empty;
 
             string[] parts = cipherText.Split(',');
-            List<byte> decryptedBytes = new List<byte>(parts.Length);
 
+            // Первый проход: проверяем, что все блоки можно преобразовать в BigInteger
             foreach (string part in parts)
             {
-                if (!BigInteger.TryParse(part.Trim(), out BigInteger c))
+                if (!BigInteger.TryParse(part.Trim(), out _))
                     throw new FormatException($"Блок '{part}' не является целым числом.");
+            }
 
+            // Второй проход: дешифруем (теперь ошибок формата не будет)
+            List<byte> decryptedBytes = new List<byte>(parts.Length);
+            foreach (string part in parts)
+            {
+                BigInteger c = BigInteger.Parse(part.Trim());
                 BigInteger m = BigInteger.ModPow(c, d, n);
                 if (m > byte.MaxValue)
                     throw new InvalidOperationException(
                         $"Расшифрованное значение {m} превышает 255. Возможно, неверный ключ или данные повреждены.");
-
                 decryptedBytes.Add((byte)m);
             }
-
             return Encoding.UTF8.GetString(decryptedBytes.ToArray());
         }
 
