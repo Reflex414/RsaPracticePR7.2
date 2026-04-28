@@ -1,0 +1,77 @@
+﻿<Window x:Class="RsaWpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Упрощённый RSA шифратор" 
+        Height="500" Width="750"
+        ResizeMode="CanResizeWithGrip"
+        WindowStartupLocation="CenterScreen">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Блок управления ключами -->
+        <GroupBox Header="Генерация ключей" Grid.Row="0" Padding="10">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="Мин. простое:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <TextBox x:Name="txtMinPrime" Width="60" Text="100" 
+                             PreviewTextInput="NumberValidationTextBox"/>
+                    <TextBlock Text="Макс. простое:" VerticalAlignment="Center" Margin="10,0,5,0"/>
+                    <TextBox x:Name="txtMaxPrime" Width="60" Text="200" 
+                             PreviewTextInput="NumberValidationTextBox"/>
+                    <Button x:Name="btnGenerate" Content="Сгенерировать ключи" 
+                            Click="btnGenerate_Click" Margin="20,0,0,0" Padding="8,3"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="tbPublicKey" Text="Открытый ключ: не сгенерирован" 
+                               Margin="5,5,20,5" FontFamily="Consolas"/>
+                    <TextBlock x:Name="tbPrivateKey" Text="Закрытый ключ: не сгенерирован" 
+                               Margin="5,5,0,5" FontFamily="Consolas"/>
+                </StackPanel>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Основная рабочая область -->
+        <Grid Grid.Row="2" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Исходный текст -->
+            <GroupBox Header="Открытый текст" Grid.Column="0">
+                <TextBox x:Name="txtPlain" AcceptsReturn="True" TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Auto" MinHeight="120"/>
+            </GroupBox>
+
+            <!-- Кнопки шифрования/дешифрования -->
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="15,0">
+                <Button Content="Зашифровать" Click="btnEncrypt_Click" 
+                        Padding="10,5" Margin="0,0,0,10"/>
+                <Button Content="Дешифровать" Click="btnDecrypt_Click" 
+                        Padding="10,5"/>
+            </StackPanel>
+
+            <!-- Шифротекст -->
+            <GroupBox Header="Шифротекст (числа)" Grid.Column="2">
+                <TextBox x:Name="txtEncrypted" IsReadOnly="True" AcceptsReturn="True"
+                         TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                         Background="#FFF5F5F5" MinHeight="120"/>
+            </GroupBox>
+        </Grid>
+
+        <!-- Результат дешифрования -->
+        <GroupBox Header="Расшифрованный текст" Grid.Row="3" Margin="0,10,0,0">
+            <TextBox x:Name="txtDecrypted" IsReadOnly="True" TextWrapping="Wrap"
+                     Background="#FFF5F5F5" MinHeight="30"/>
+        </GroupBox>
+    </Grid>
+</Window>
